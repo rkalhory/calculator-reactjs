@@ -13,13 +13,19 @@ class App extends React.Component {
             point:false
         }
     }
-    checkchar = (val) =>{
+    addInput = (val) =>{
         if (val === "."||val==="/"||val==="*"||val==="-"||val==="+"){
             if (val === "."){
                 !(this.state.point) &&
                 this.setState((s)=>({point:true}),()=>{this.setState({input: this.state.input + val})})
             }else {
-                this.setState((s)=>({point: false}),()=>{this.setState({input: this.state.input + val})})
+                const str = string(this.state.input);
+                const last=str.substring(str.length - 1)
+                if (!(last==="/"||last==="*"||last==="-"||last==="+")) {
+                    this.setState((s) => ({point: false}), () => {
+                        this.setState({input: this.state.input + val})
+                    })
+                }
             }
         }
         else{
@@ -28,30 +34,52 @@ class App extends React.Component {
     }
 
     handleEqual = () => {
-        const str = this.state.input;
-        // console.log(this.state.input+"       "+str.substring(str.length - 1)+"     "+str.substring(0, str.length - 1));
+        const str = string(this.state.input);
         const last=str.substring(str.length - 1)
         if (last === "."||last==="/"||last==="*"||last==="-"||last==="+"){
             let g=str.substring(0, str.length - 1)
            this.setState({input:g},()=>{
-               this.setState(()=>({ input: math.evaluate(this.state.input) }))
+               this.setState(()=>({ input: math.evaluate(this.state.input) }),
+                   ()=>{this.setState(()=>({point:false}))})
                if(string(this.state.input).includes(".")){this.setState(()=>({point:true}))}
            })
         }else{
-            this.setState(()=>({ input: math.evaluate(this.state.input) }))
+            this.setState(()=>({ input: math.evaluate(this.state.input) }),
+                ()=>{this.setState(()=>({point:false}))})
             if(string(this.state.input).includes(".")){this.setState(()=>({point:true}))}
         }
     };
 
     getKey = (e) => {
-        if (((!isNaN( e.key)) ||  e.key === "."||  e.key === "Enter" ||  e.key === "="||  e.key === "+"||  e.key === "-"||  e.key === "*"||  e.key === "/")){
-            e.key==='Enter' ? this.handleEqual() : this.checkchar(e.key)
+        if (((!isNaN( e.key)) ||  e.key === "."||  e.key === "Enter" ||e.key === "Backspace" ||e.key === "Delete" ||  e.key === "="||  e.key === "+"||  e.key === "-"||  e.key === "*"||  e.key === "/")){
+            switch(e.key) {
+                case 'Enter':
+                    this.handleEqual()
+                    break;
+                case 'Backspace':
+                    this.handleCE()
+                    break;
+                case 'Delete':
+                    this.handleAC()
+                    break;
+                default:
+                    this.addInput(e.key)
+            }
         }
     };
 
-    handleClear = () =>{
+    handleAC = () =>{
         this.setState(()=>({input:""}))
         this.setState(()=>({point:false}))
+    }
+    handleCE = () =>{
+        const str = string(this.state.input);
+        const last=str.substring(str.length - 1)
+        const g=str.substring(0, str.length - 1)
+        this.setState({input:g})
+        if (last==="."){
+            this.setState(()=>({point:false}))
+        }
     }
 
     componentDidMount(){
@@ -68,32 +96,32 @@ class App extends React.Component {
                     <p id='title'>my calculator</p>
                     <Input input={this.state.input}/>
                     <div className='row'>
-                        <Button handleClick={this.handleClear}>AC</Button>
-                        <Button handleClick={this.handleClear}>CE</Button>
-                        <Button handleClick={this.checkchar}>%</Button>
-                        <Button handleClick={this.checkchar}>/</Button>
+                        <Button handleClick={this.handleAC}>AC</Button>
+                        <Button handleClick={this.handleCE}>CE</Button>
+                        <Button handleClick={this.addInput}>%</Button>
+                        <Button handleClick={this.addInput}>/</Button>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.checkchar}>7</Button>
-                        <Button handleClick={this.checkchar}>8</Button>
-                        <Button handleClick={this.checkchar}>9</Button>
-                        <Button handleClick={this.checkchar}>*</Button>
+                        <Button handleClick={this.addInput}>7</Button>
+                        <Button handleClick={this.addInput}>8</Button>
+                        <Button handleClick={this.addInput}>9</Button>
+                        <Button handleClick={this.addInput}>*</Button>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.checkchar}>6</Button>
-                        <Button handleClick={this.checkchar}>5</Button>
-                        <Button handleClick={this.checkchar}>4</Button>
-                        <Button handleClick={this.checkchar}>-</Button>
+                        <Button handleClick={this.addInput}>6</Button>
+                        <Button handleClick={this.addInput}>5</Button>
+                        <Button handleClick={this.addInput}>4</Button>
+                        <Button handleClick={this.addInput}>-</Button>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.checkchar}>3</Button>
-                        <Button handleClick={this.checkchar}>2</Button>
-                        <Button handleClick={this.checkchar}>1</Button>
-                        <Button handleClick={this.checkchar}>+</Button>
+                        <Button handleClick={this.addInput}>3</Button>
+                        <Button handleClick={this.addInput}>2</Button>
+                        <Button handleClick={this.addInput}>1</Button>
+                        <Button handleClick={this.addInput}>+</Button>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.checkchar}>.</Button>
-                        <Button handleClick={this.checkchar}>0</Button>
+                        <Button handleClick={this.addInput}>.</Button>
+                        <Button handleClick={this.addInput}>0</Button>
                         <Button handleClick={() => this.handleEqual()}>=</Button>
                     </div>
                 </div>
