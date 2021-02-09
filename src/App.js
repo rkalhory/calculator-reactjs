@@ -36,8 +36,9 @@ class App extends React.Component {
     handleEqual = () => {
         const str = string(this.state.input);
         const last=str.substring(str.length - 1)
+        let g=""
         if (last === "."||last==="/"||last==="*"||last==="-"||last==="+"){
-            let g=str.substring(0, str.length - 1)
+           last==="." ? g=str+"0": g=str.substring(0, str.length - 1)
            this.setState({input:g},()=>{
                this.setState(()=>({ input: math.evaluate(this.state.input) }),
                    ()=>{this.setState(()=>({point:false}))})
