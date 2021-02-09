@@ -21,7 +21,7 @@ class App extends React.Component {
             }else {
                 const str = string(this.state.input);
                 const last=str.substring(str.length - 1)
-                if (!(last==="/"||last==="*"||last==="-"||last==="+")) {
+                if (!(last==="."||last==="/"||last==="*"||last==="-"||last==="+")) {
                     this.setState((s) => ({point: false}), () => {
                         this.setState({input: this.state.input + val})
                     })
