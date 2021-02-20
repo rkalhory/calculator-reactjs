@@ -1,6 +1,6 @@
 import './style.css';
 import React from "react";
-import Button from "./components/Button";
+import ButtonRow from "./components/ButtonRow";
 import Input from "./components/Input";
 import * as math from 'mathjs'
 import {string} from "mathjs";
@@ -97,33 +97,43 @@ class App extends React.Component {
                     <p id='title'>my calculator</p>
                     <Input input={this.state.input}/>
                     <div className='row'>
-                        <Button handleClick={this.handleAC}>AC</Button>
-                        <Button handleClick={this.handleCE}>CE</Button>
-                        <Button handleClick={this.addInput}>%</Button>
-                        <Button handleClick={this.addInput}>/</Button>
+                        <ButtonRow data={[
+                            {name:'AC',operator:this.handleAC},
+                            {name:'CE',operator:this.handleCE},
+                            {name:'%',operator:this.addInput},
+                            {name:'/',operator:this.addInput}
+                        ]}/>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.addInput}>7</Button>
-                        <Button handleClick={this.addInput}>8</Button>
-                        <Button handleClick={this.addInput}>9</Button>
-                        <Button handleClick={this.addInput}>*</Button>
+                        <ButtonRow data={[
+                            {name:'7',operator:this.addInput},
+                            {name:'8',operator:this.addInput},
+                            {name:'9',operator:this.addInput},
+                            {name:'*',operator:this.addInput}
+                        ]}/>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.addInput}>6</Button>
-                        <Button handleClick={this.addInput}>5</Button>
-                        <Button handleClick={this.addInput}>4</Button>
-                        <Button handleClick={this.addInput}>-</Button>
+                        <ButtonRow data={[
+                            {name:'6',operator:this.addInput},
+                            {name:'5',operator:this.addInput},
+                            {name:'4',operator:this.addInput},
+                            {name:'-',operator:this.addInput}
+                        ]}/>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.addInput}>3</Button>
-                        <Button handleClick={this.addInput}>2</Button>
-                        <Button handleClick={this.addInput}>1</Button>
-                        <Button handleClick={this.addInput}>+</Button>
+                        <ButtonRow data={[
+                            {name:'3',operator:this.addInput},
+                            {name:'2',operator:this.addInput},
+                            {name:'1',operator:this.addInput},
+                            {name:'+',operator:this.addInput}
+                        ]}/>
                     </div>
                     <div className='row'>
-                        <Button handleClick={this.addInput}>.</Button>
-                        <Button handleClick={this.addInput}>0</Button>
-                        <Button handleClick={() => this.handleEqual()}>=</Button>
+                        <ButtonRow data={[
+                            {name:'.',operator:this.addInput},
+                            {name:'0',operator:this.addInput},
+                            {name:'=',operator:this.addInput}
+                            ]}/>
                     </div>
                 </div>
             </div>
